@@ -71,15 +71,14 @@ export default {
     const fetchdata = async () => {
       try {
         // เรียก API (PHP)
-        const response = await fetch("http://localhost/dbshop/php_api/show_employee.php");
+        const response = await fetch("http://localhost/week7/php_api/employee_crud.php");
+        const result = await response.json();
 
-        // ตรวจสอบว่าการเรียกสำเร็จหรือไม่
-        if (!response.ok) {
-          throw new Error("ไม่สามารถดึงข้อมูลได้");
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "ไม่สามารถดึงข้อมูลได้");
         }
 
-        // แปลง response เป็น JSON
-        employees.value = await response.json();
+        employees.value = result.data;
 
       } catch (err) {
         // ถ้า error ให้เก็บข้อความไว้แสดง
@@ -97,20 +96,20 @@ export default {
       if (!confirm("คุณต้องการลบข้อมูลนี้ใช่หรือไม่?")) return;
 
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/employee_crud.php", {
+        const response = await fetch("http://localhost/week7/php_api/employee_crud.php", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ emp_id: id })
         });
         const result = await response.json();
 
-        if (result.success) {
+        if (response.ok && result.success) {
           employees.value = employees.value.filter(
-            (employee) => employee.emp_id !== id
+            (employee) => String(employee.emp_id) !== String(id)
           );
           alert(result.message);
         } else {
-          alert(result.message);
+          throw new Error(result.message || "ไม่สามารถลบข้อมูลพนักงานได้");
         }
       } catch (err) {
         alert("เกิดข้อผิดพลาด: " + err.message);

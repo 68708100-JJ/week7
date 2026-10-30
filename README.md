@@ -5,6 +5,8 @@
 npm install
 ```
 
+Import `database/contacts.sql` into the `db_shop` MySQL database before using the Contacts page.
+
 ### Compiles and hot-reloads for development
 ```
 npm run serve

@@ -72,7 +72,7 @@ export default {
     const fetchdata = async () => {
       try {
         // เรียก API (PHP)
-        const response = await fetch("http://localhost/dbshop/php_api/show_customers.php");
+        const response = await fetch("http://localhost/week7/php_api/show_customers.php");
 
         // ตรวจสอบว่าการเรียกสำเร็จหรือไม่
         if (!response.ok) {
@@ -97,7 +97,7 @@ export default {
       if (!confirm("คุณต้องการลบข้อมูลนี้ใช่หรือไม่?")) return;
 
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/customer_crud.php", {
+        const response = await fetch("http://localhost/week7/php_api/customer_crud.php", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ customer_id: id })

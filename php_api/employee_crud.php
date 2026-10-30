@@ -2,6 +2,11 @@
 include 'condb.php';
 header("Content-Type: application/json; charset=UTF-8");
 
+if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
+    http_response_code(204);
+    exit;
+}
+
 function respond($success, $message, $data = null, $status = 200)
 {
     http_response_code($status);
@@ -13,12 +18,25 @@ function respond($success, $message, $data = null, $status = 200)
     exit;
 }
 
+function getEmployeeId($data)
+{
+    $value = $data["emp_id"] ?? null;
+    if ((!is_string($value) && !is_int($value)) || !ctype_digit((string) $value)) {
+        return null;
+    }
+
+    $id = filter_var(ltrim((string) $value, "0"), FILTER_VALIDATE_INT);
+    return $id !== false && $id > 0 ? $id : null;
+}
+
 try {
     $method = $_SERVER['REQUEST_METHOD'];
 
     if ($method === "GET") {
-        // Use the existing employee table and emp_id primary key.
-        $stmt = $conn->query("SELECT * FROM employee ORDER BY emp_id DESC");
+        $stmt = $conn->query(
+            "SELECT emp AS emp_id, firstName, lastName, phone, username
+             FROM employee ORDER BY emp DESC"
+        );
         echo json_encode([
             "success" => true,
             "message" => "ดึงข้อมูลพนักงานเรียบร้อย",
@@ -54,8 +72,8 @@ try {
     }
 
     if ($method === "PUT") {
-        $emp_id = filter_var($data["emp_id"] ?? null, FILTER_VALIDATE_INT);
-        if (!$emp_id || $emp_id < 1) {
+        $emp_id = getEmployeeId($data);
+        if ($emp_id === null) {
             respond(false, "ไม่พบค่า emp_id", null, 400);
         }
         foreach (["firstName", "lastName", "phone", "username"] as $field) {
@@ -67,13 +85,13 @@ try {
         if (!empty($data["password"])) {
             $stmt = $conn->prepare(
                 "UPDATE employee SET firstName = :firstName, lastName = :lastName,
-                 phone = :phone, username = :username, password = :password WHERE emp_id = :id"
+                     phone = :phone, username = :username, password = :password WHERE emp = :id"
             );
             $stmt->bindValue(":password", password_hash($data["password"], PASSWORD_DEFAULT));
         } else {
             $stmt = $conn->prepare(
                 "UPDATE employee SET firstName = :firstName, lastName = :lastName,
-                 phone = :phone, username = :username WHERE emp_id = :id"
+                     phone = :phone, username = :username WHERE emp = :id"
             );
         }
         $stmt->bindValue(":firstName", $data["firstName"]);
@@ -86,12 +104,12 @@ try {
     }
 
     if ($method === "DELETE") {
-        $emp_id = filter_var($data["emp_id"] ?? null, FILTER_VALIDATE_INT);
-        if (!$emp_id || $emp_id < 1) {
+        $emp_id = getEmployeeId($data);
+        if ($emp_id === null) {
             respond(false, "ไม่พบค่า emp_id", null, 400);
         }
 
-        $stmt = $conn->prepare("DELETE FROM employee WHERE emp_id = :id");
+        $stmt = $conn->prepare("DELETE FROM employee WHERE emp = :id");
         $stmt->bindValue(":id", $emp_id, PDO::PARAM_INT);
         $stmt->execute();
         if ($stmt->rowCount() === 0) {

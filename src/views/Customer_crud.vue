@@ -101,7 +101,7 @@ export default {
 
     const fetchCustomers = async () => {
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/customer_crud.php");
+        const response = await fetch("http://localhost/week7/php_api/customer_crud.php");
         const result = await response.json();
 
         if (result.success) {
@@ -144,7 +144,7 @@ export default {
 
     // ✅ ใช้ฟังก์ชันเดียวสำหรับทั้งเพิ่ม/แก้ไข
     const saveCustomer = async () => {
-      const url = "http://localhost/dbshop/php_api/customer_crud.php";
+      const url = "http://localhost/week7/php_api/customer_crud.php";
       const method = isEditMode.value ? "PUT" : "POST";
 
       try {
@@ -172,7 +172,7 @@ export default {
     const deleteCustomer = async (id) => {
       if (!confirm("คุณต้องการลบข้อมูลนี้ใช่หรือไม่?")) return;
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/customer_crud.php", {
+        const response = await fetch("http://localhost/week7/php_api/customer_crud.php", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ customer_id: id })

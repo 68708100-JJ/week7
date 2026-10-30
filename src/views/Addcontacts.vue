@@ -39,7 +39,7 @@ export default {
   methods: {
     async addData() {
       try {
-        const res = await fetch("http://localhost/dbshop/php_api/Addcontacts.php", {
+        const res = await fetch("http://localhost/week7/php_api/Addcontacts.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(this.contact)

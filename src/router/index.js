@@ -60,6 +60,18 @@ const routes = [
     name: 'employee_crud',
    
     component: () => import(/* webpackChunkName: "about" */ '../views/Employee_crud.vue')
+  },
+  {
+    path: '/PDED',
+    name: 'product_edit',
+   
+    component: () => import(/* webpackChunkName: "about" */ '../views/product_edit.vue')
+  },
+  {
+    path: '/ASED',
+    name: 'assets_edit',
+   
+    component: () => import(/* webpackChunkName: "about" */ '../views/assets.edit.vue')
   }
 ]
 

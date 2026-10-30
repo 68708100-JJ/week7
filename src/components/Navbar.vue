@@ -24,7 +24,14 @@
             <router-link class="nav-link" to="/contacts">Contacts</router-link>
           </li>
           
-           <li class="nav-item dropdown">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/PDED">Products</router-link>
+          </li>
+           <li class="nav-item">
+            <router-link class="nav-link" to="/ASED">Assets</router-link>
+          </li>
+          
+         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Register
           </a>

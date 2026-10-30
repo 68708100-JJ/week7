@@ -99,7 +99,7 @@ export default {
 
     const fetchContacts = async () => {
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/show_contacts.php");
+        const response = await fetch("http://localhost/week7/php_api/show_contacts.php");
         const result = await response.json();
 
         if (!response.ok) {
@@ -145,7 +145,7 @@ export default {
 
     const saveContact = async () => {
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/show_contacts.php", {
+        const response = await fetch("http://localhost/week7/php_api/show_contacts.php", {
           method: isEditMode.value ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(contactForm.value)
@@ -168,7 +168,7 @@ export default {
       if (!confirm("คุณต้องการลบข้อมูลติดต่อนี้ใช่หรือไม่?")) return;
 
       try {
-        const response = await fetch("http://localhost/dbshop/php_api/show_contacts.php", {
+        const response = await fetch("http://localhost/week7/php_api/show_contacts.php", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ contact_id: id })
